@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import mock
 
-from requests_jwt.deserializers import ObjectListDeserializerMixin
+from drf_requests_jwt.deserializers import ObjectListDeserializerMixin
 
 
 class ObjectListDeserializerMixinTestCase(TestCase):

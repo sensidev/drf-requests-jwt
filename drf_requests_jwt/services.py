@@ -6,7 +6,7 @@ from urllib.parse import urlparse, parse_qs
 
 import requests
 
-from requests_jwt import settings
+from drf_requests_jwt import settings
 
 logger = logging.getLogger(__name__)
 

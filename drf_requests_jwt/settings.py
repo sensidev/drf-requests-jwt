@@ -20,5 +20,5 @@ def import_from_string(val):
 
 DEFAULTS = {
     'OBTAIN_JWT_ALLOWED_FAIL_ATTEMPTS': 3,
-    'CACHE_BACKEND_CLASS': 'requests_jwt.backends.file_cache.FileCacheBackend'
+    'CACHE_BACKEND_CLASS': 'drf_requests_jwt.backends.file_cache.FileCacheBackend'
 }

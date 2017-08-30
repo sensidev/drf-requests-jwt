@@ -1,4 +1,4 @@
-from requests_jwt.backends.base import BaseBackend
+from drf_requests_jwt.backends.base import BaseBackend
 
 
 class FileCacheBackend(BaseBackend):

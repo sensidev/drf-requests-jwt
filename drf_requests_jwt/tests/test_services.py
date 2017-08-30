@@ -2,47 +2,47 @@ from unittest import TestCase
 
 import mock
 
-from requests_jwt.services import HttpRequestService
+from drf_requests_jwt.services import HttpRequestService
 
 
 class BaseHttpRequestServiceTestCase(TestCase):
     def _patch_requests(self):
-        patcher = mock.patch('requests_jwt.services.requests')
+        patcher = mock.patch('drf_requests_jwt.services.requests')
         self.requests_mock = patcher.start()
         self.addCleanup(patcher.stop)
 
     def _patch_get_jwt_login_url_path(self):
-        patcher = mock.patch('requests_jwt.services.HttpRequestService._get_jwt_login_url_path')
+        patcher = mock.patch('drf_requests_jwt.services.HttpRequestService._get_jwt_login_url_path')
         self.get_jwt_login_url_path_mock = patcher.start()
         self.addCleanup(patcher.stop)
 
     def _patch_get_url_path(self):
-        patcher = mock.patch('requests_jwt.services.HttpRequestService._get_url_path')
+        patcher = mock.patch('drf_requests_jwt.services.HttpRequestService._get_url_path')
         self.get_url_path_mock = patcher.start()
         self.addCleanup(patcher.stop)
 
     def _patch_get_password(self):
-        patcher = mock.patch('requests_jwt.services.HttpRequestService._get_password')
+        patcher = mock.patch('drf_requests_jwt.services.HttpRequestService._get_password')
         self.get_password_mock = patcher.start()
         self.addCleanup(patcher.stop)
 
     def _patch_get_username(self):
-        patcher = mock.patch('requests_jwt.services.HttpRequestService._get_username')
+        patcher = mock.patch('drf_requests_jwt.services.HttpRequestService._get_username')
         self.get_username_mock = patcher.start()
         self.addCleanup(patcher.stop)
 
     def _patch_get_base_url(self):
-        patcher = mock.patch('requests_jwt.services.HttpRequestService._get_base_url')
+        patcher = mock.patch('drf_requests_jwt.services.HttpRequestService._get_base_url')
         self.get_base_url_mock = patcher.start()
         self.addCleanup(patcher.stop)
 
     def _patch_get_headers(self):
-        patcher = mock.patch('requests_jwt.services.HttpRequestService._get_headers')
+        patcher = mock.patch('drf_requests_jwt.services.HttpRequestService._get_headers')
         self.get_headers_mock = patcher.start()
         self.addCleanup(patcher.stop)
 
     def _patch_get_cache_backend(self):
-        patcher = mock.patch('requests_jwt.services.HttpRequestService._get_cache_backend')
+        patcher = mock.patch('drf_requests_jwt.services.HttpRequestService._get_cache_backend')
         self.get_cache_backend_mock = patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -64,7 +64,7 @@ class HttpRequestServiceTestCase(BaseHttpRequestServiceTestCase):
         self.get_mock = self.session_mock.return_value.get
         self.post_mock = self.session_mock.return_value.post
 
-    @mock.patch('requests_jwt.services.HttpRequestService._get_params')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_params')
     def test_init(self, get_params_mock):
         headers_mock = {'h1': 'hv1', 'h2': 'hv2'}
         url_mock = 'mock://host:1234/path/to/resource/'
@@ -82,8 +82,8 @@ class HttpRequestServiceTestCase(BaseHttpRequestServiceTestCase):
         self.assertDictEqual(instance.params, {'p1': 'pv2', 'p2': 'pv2', 'other_param': 'value'})
         self.assertEqual(instance.session, self.requests_mock.Session.return_value)
 
-    @mock.patch('requests_jwt.services.HttpRequestService._get_base_url')
-    @mock.patch('requests_jwt.services.HttpRequestService._get_url_path')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_base_url')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_url_path')
     def test_get_url(self, get_url_path_mock, get_base_url_mock):
         get_base_url_mock.return_value = 'http://base:1234'
         get_url_path_mock.return_value = 'path/to/resource/'
@@ -92,8 +92,8 @@ class HttpRequestServiceTestCase(BaseHttpRequestServiceTestCase):
         actual_result = instance._get_url()
         self.assertEqual(actual_result, 'http://base:1234/path/to/resource/')
 
-    @mock.patch('requests_jwt.services.HttpRequestService._get_base_url')
-    @mock.patch('requests_jwt.services.HttpRequestService._get_jwt_login_url_path')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_base_url')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_jwt_login_url_path')
     def test_get_jwt_login_url(self, get_jwt_login_url_path_mock, get_base_url_mock):
         get_base_url_mock.return_value = 'http://base:1234'
         get_jwt_login_url_path_mock.return_value = 'path/to/resource/'
@@ -144,8 +144,8 @@ class HttpRequestServiceTestCase(BaseHttpRequestServiceTestCase):
 
         self.assertEqual(self.get_mock.call_count, 3)
 
-    @mock.patch('requests_jwt.services.HttpRequestService._should_update_authorization_header')
-    @mock.patch('requests_jwt.services.HttpRequestService.update_authorization_header')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._should_update_authorization_header')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService.update_authorization_header')
     def test_get_results_from_all_pages_unauthorized_should_update_header(self, update_mock, should_update_mock):
         should_update_mock.side_effect = [True, False]
 
@@ -171,8 +171,8 @@ class HttpRequestServiceTestCase(BaseHttpRequestServiceTestCase):
         self.assertEqual(should_update_mock.call_count, 2)
         update_mock.assert_called_once_with()
 
-    @mock.patch('requests_jwt.services.HttpRequestService._should_update_authorization_header')
-    @mock.patch('requests_jwt.services.HttpRequestService.update_authorization_header')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._should_update_authorization_header')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService.update_authorization_header')
     def test_get_results_from_all_pages_unauthorized_should_not_update_header(self, update_mock, should_update_mock):
         should_update_mock.return_value = False
 
@@ -254,7 +254,7 @@ class HttpRequestServiceTestCase(BaseHttpRequestServiceTestCase):
 
         self.get_cache_backend_mock.return_value.get_jwt.assert_called_once_with()
 
-    @mock.patch('requests_jwt.services.HttpRequestService._get_jwt_token')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_jwt_token')
     def test_update_authorization_header(self, get_jwt_token_mock):
         get_jwt_token_mock.return_value = 'updated-token12345'
 
@@ -266,8 +266,8 @@ class HttpRequestServiceTestCase(BaseHttpRequestServiceTestCase):
 
         self.assertEqual(instance.headers['Authorization'], 'JWT updated-token12345')
 
-    @mock.patch('requests_jwt.services.HttpRequestService._set_jwt_token_to_cache')
-    @mock.patch('requests_jwt.services.HttpRequestService._get_jwt_login_url')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._set_jwt_token_to_cache')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_jwt_login_url')
     def test_get_jwt_token_success(self, get_jwt_login_url_mock, set_jwt_token_to_cache_mock):
         self.post_mock.return_value.status_code = 200
         self.post_mock.return_value.json.return_value = {'token': 'the-token12345'}
@@ -287,8 +287,8 @@ class HttpRequestServiceTestCase(BaseHttpRequestServiceTestCase):
 
         set_jwt_token_to_cache_mock.assert_called_once_with('the-token12345')
 
-    @mock.patch('requests_jwt.services.HttpRequestService._set_jwt_token_to_cache')
-    @mock.patch('requests_jwt.services.HttpRequestService._get_jwt_login_url')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._set_jwt_token_to_cache')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_jwt_login_url')
     def test_get_jwt_token_fail(self, get_jwt_login_url_mock, set_jwt_token_to_cache_mock):
         self.post_mock.return_value.status_code = 400
         self.post_mock.return_value.json.return_value = {'token': 'the-token12345'}
@@ -315,7 +315,7 @@ class HttpRequestHeadersTestCase(BaseHttpRequestServiceTestCase):
         self._patch_get_password()
         self._patch_get_url_path()
 
-    @mock.patch('requests_jwt.services.HttpRequestService._get_jwt_token_from_cache')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_jwt_token_from_cache')
     def test_get_headers(self, get_jwt_token_from_cache_mock):
         get_jwt_token_from_cache_mock.return_value = 'jwt-username-token123456'
         instance = HttpRequestService()
