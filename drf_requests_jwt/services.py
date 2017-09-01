@@ -125,8 +125,8 @@ class HttpRequestService(object):
         response = self.session.post(url, data=payload)
 
         if response.status_code == 200:
-            response_json = response.json()
-            token = response_json.get('token')
+            response_dict = response.json()
+            token = response_dict.get('token')
             self._set_jwt_token_to_cache(token)
             logger.debug('Received a fresh JWT token')
             return token

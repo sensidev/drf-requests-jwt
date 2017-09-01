@@ -2,11 +2,12 @@ from setuptools import setup, find_packages
 
 requires = [
     'requests>=2.18.1',
+    'python-slugify>=1.2.4'
 ]
 
 setup(
     name='drf_requests_jwt',
-    version='0.5',
+    version='0.6',
     description='Django Rest Framework Requests with JWT support',
     long_description=open('README.rst').read(),
     url='https://github.com/sensidev/drf-requests-jwt',
