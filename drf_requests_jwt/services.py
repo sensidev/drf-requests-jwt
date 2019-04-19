@@ -2,11 +2,11 @@
 Services.
 """
 import logging
+import requests
 from urllib.parse import urlparse, parse_qs
 
-import requests
-
 from drf_requests_jwt import settings
+from drf_requests_jwt.backends.utils import build_url
 
 logger = logging.getLogger(__name__)
 
@@ -41,13 +41,13 @@ class HttpRequestService(object):
         raise NotImplementedError
 
     def _get_url(self):
-        return '{base_url}/{path}'.format(base_url=self._get_base_url(), path=self._get_url_path())
+        return build_url(base_url=self._get_base_url(), path=self._get_url_path())
 
     def _get_jwt_login_url_path(self):
         raise NotImplementedError
 
     def _get_jwt_login_url(self):
-        return '{base_url}/{path}'.format(base_url=self._get_base_url(), path=self._get_jwt_login_url_path())
+        return build_url(base_url=self._get_base_url(), path=self._get_jwt_login_url_path())
 
     def _get_username(self):
         raise NotImplementedError

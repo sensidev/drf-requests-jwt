@@ -1,6 +1,9 @@
 """
 Deserializers.
 """
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ObjectListDeserializerMixin(object):
@@ -16,5 +19,7 @@ class ObjectListDeserializerMixin(object):
             serializer = self.serializer_class(data=object_json)
             if serializer.is_valid():
                 object_list.append(serializer.save())
+            else:
+                logger.debug("Serializer has errors {}", serializer.errors)
 
         return object_list

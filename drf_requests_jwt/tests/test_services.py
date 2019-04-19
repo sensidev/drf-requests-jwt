@@ -19,6 +19,7 @@ class BaseHttpRequestServiceTestCase(TestCase):
     def _patch_get_url_path(self):
         patcher = mock.patch('drf_requests_jwt.services.HttpRequestService._get_url_path')
         self.get_url_path_mock = patcher.start()
+        self.get_url_path_mock.return_value = '/mocked/path/'
         self.addCleanup(patcher.stop)
 
     def _patch_get_password(self):
@@ -34,6 +35,7 @@ class BaseHttpRequestServiceTestCase(TestCase):
     def _patch_get_base_url(self):
         patcher = mock.patch('drf_requests_jwt.services.HttpRequestService._get_base_url')
         self.get_base_url_mock = patcher.start()
+        self.get_base_url_mock.return_value = 'http://base:1234'
         self.addCleanup(patcher.stop)
 
     def _patch_get_headers(self):
@@ -93,9 +95,29 @@ class HttpRequestServiceTestCase(BaseHttpRequestServiceTestCase):
         self.assertEqual(actual_result, 'http://base:1234/path/to/resource/')
 
     @mock.patch('drf_requests_jwt.services.HttpRequestService._get_base_url')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_url_path')
+    def test_get_url_with_trailing_slash(self, get_url_path_mock, get_base_url_mock):
+        get_base_url_mock.return_value = 'http://base:1234/'
+        get_url_path_mock.return_value = 'path/to/resource/'
+
+        instance = HttpRequestService()
+        actual_result = instance._get_url()
+        self.assertEqual(actual_result, 'http://base:1234/path/to/resource/')
+
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_base_url')
     @mock.patch('drf_requests_jwt.services.HttpRequestService._get_jwt_login_url_path')
     def test_get_jwt_login_url(self, get_jwt_login_url_path_mock, get_base_url_mock):
         get_base_url_mock.return_value = 'http://base:1234'
+        get_jwt_login_url_path_mock.return_value = 'path/to/resource/'
+
+        instance = HttpRequestService()
+        actual_result = instance._get_jwt_login_url()
+        self.assertEqual(actual_result, 'http://base:1234/path/to/resource/')
+
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_base_url')
+    @mock.patch('drf_requests_jwt.services.HttpRequestService._get_jwt_login_url_path')
+    def test_get_jwt_login_url_with_trailing_slash(self, get_jwt_login_url_path_mock, get_base_url_mock):
+        get_base_url_mock.return_value = 'http://base:1234/'
         get_jwt_login_url_path_mock.return_value = 'path/to/resource/'
 
         instance = HttpRequestService()
