@@ -20,11 +20,11 @@ class HttpRequestService(object):
 
         self.cache_backend = self._get_cache_backend()
 
-        self.headers = self._get_headers()
-        self.url = self._get_url()
-
         self.params = params or {}
         self.params.update(self._get_params())
+
+        self.headers = self._get_headers()
+        self.url = self._get_url()
 
         self.session = requests.Session()
 
