@@ -62,7 +62,7 @@ class HttpRequestService(object):
         return {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': 'JWT {token}'.format(token=self._get_jwt_token_from_cache())
+            'Authorization': 'Bearer {token}'.format(token=self._get_jwt_token_from_cache())
         }
 
     def get_results_from_all_pages(self):
@@ -110,7 +110,7 @@ class HttpRequestService(object):
 
     def update_authorization_header(self):
         token = self._get_jwt_token()
-        self.headers['Authorization'] = 'JWT {token}'.format(token=token)
+        self.headers['Authorization'] = 'Bearer {token}'.format(token=token)
 
     def get_deserialized_data(self):
         raise NotImplementedError
@@ -126,7 +126,7 @@ class HttpRequestService(object):
 
         if response.status_code == 200:
             response_dict = response.json()
-            token = response_dict.get('token')
+            token = response_dict.get('access')
             self._set_jwt_token_to_cache(token)
             logger.debug('Received a fresh JWT token')
             return token

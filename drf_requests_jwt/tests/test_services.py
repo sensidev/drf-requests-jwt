@@ -286,13 +286,13 @@ class HttpRequestServiceTestCase(BaseHttpRequestServiceTestCase):
 
         instance.update_authorization_header()
 
-        self.assertEqual(instance.headers['Authorization'], 'JWT updated-token12345')
+        self.assertEqual(instance.headers['Authorization'], 'Bearer updated-token12345')
 
     @mock.patch('drf_requests_jwt.services.HttpRequestService._set_jwt_token_to_cache')
     @mock.patch('drf_requests_jwt.services.HttpRequestService._get_jwt_login_url')
     def test_get_jwt_token_success(self, get_jwt_login_url_mock, set_jwt_token_to_cache_mock):
         self.post_mock.return_value.status_code = 200
-        self.post_mock.return_value.json.return_value = {'token': 'the-token12345'}
+        self.post_mock.return_value.json.return_value = {'access': 'the-token12345', 'refresh': 'the-refresh-token122'}
 
         get_jwt_login_url_mock.return_value = 'mock://host0:1234/path/to/jwt/login/'
 
@@ -313,7 +313,7 @@ class HttpRequestServiceTestCase(BaseHttpRequestServiceTestCase):
     @mock.patch('drf_requests_jwt.services.HttpRequestService._get_jwt_login_url')
     def test_get_jwt_token_fail(self, get_jwt_login_url_mock, set_jwt_token_to_cache_mock):
         self.post_mock.return_value.status_code = 400
-        self.post_mock.return_value.json.return_value = {'token': 'the-token12345'}
+        self.post_mock.return_value.json.return_value = {'token': 'the-token12345', 'refresh': 'the-refresh-token122'}
 
         get_jwt_login_url_mock.return_value = 'mock://host0:1234/path/to/jwt/login/'
 
@@ -344,5 +344,5 @@ class HttpRequestHeadersTestCase(BaseHttpRequestServiceTestCase):
         self.assertDictEqual(instance._get_headers(), {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': 'JWT jwt-username-token123456'
+            'Authorization': 'Bearer jwt-username-token123456'
         })
