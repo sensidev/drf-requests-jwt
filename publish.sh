@@ -17,6 +17,9 @@ check
 pytest
 check
 
+echo "Removing cache"
+rm -r .cache/
+
 echo "Building dist"
 python setup.py sdist bdist_wheel
 check
