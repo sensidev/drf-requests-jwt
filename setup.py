@@ -7,7 +7,7 @@ requires = [
 
 setup(
     name='drf_requests_jwt',
-    version='0.11',
+    version='0.12',
     description='Django Rest Framework Requests with JWT support',
     long_description=open('README.rst').read(),
     url='https://github.com/sensidev/drf-requests-jwt',
