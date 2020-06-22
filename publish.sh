@@ -20,6 +20,9 @@ check
 echo "Removing cache"
 rm -r .cache/
 
+echo "Removing build"
+rm -r build/
+
 echo "Building dist"
 python setup.py sdist bdist_wheel
 check
