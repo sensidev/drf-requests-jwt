@@ -21,6 +21,6 @@ class ObjectListDeserializerMixin(object):
             if serializer.is_valid():
                 object_list.append(serializer.save())
             else:
-                logger.debug("Serializer has errors {}".format(serializer.errors))
+                logger.warning("Serializer has errors {}".format(serializer.errors))
 
         return object_list
